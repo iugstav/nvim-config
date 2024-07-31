@@ -1,5 +1,7 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
+	vim.env.GIT_DIR = nil
+	vim.env.GIT_WORK_TREE = nil
 	vim.fn.system({
 		"git",
 		"clone",
@@ -11,7 +13,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-	spec = "iugstav.lazy",
-	change_detection = { notify = false }
-})
+local ok, lazy = pcall(require, "lazy")
+if ok then
+	lazy.setup({
+		spec = "iugstav.lazy",
+		change_detection = { notify = false }
+	})
+else
+	vim.notify("unable to load lazy")
+end
