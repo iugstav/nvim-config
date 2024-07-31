@@ -1,4 +1,4 @@
-vim.opt.guicursor ="a:blinkwait700-blinkoff400-blinkon250-Cursor"
+vim.opt.guicursor = "a:blinkwait700-blinkoff400-blinkon250-Cursor"
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
