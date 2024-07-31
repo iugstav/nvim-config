@@ -1,2 +1,2 @@
-require "iugstav"
+require("iugstav")
 
