@@ -168,6 +168,20 @@ return {
 					codelens = { enable = true },
 				},
 			},
+
+			basedpyright = {
+				disableOrganizeImports = true,
+				disableTaggedHints = false,
+				analysis = {
+					typeCheckingMode = "standard",
+					useLibraryCodeForTypes = true, -- Analyze library code for type information
+					autoImportCompletions = true,
+					autoSearchPaths = true,
+					diagnosticSeverityOverrides = {
+						reportIgnoreCommentWithoutRule = true,
+					},
+				},
+			},
 		}
 
 		local servers_to_install = vim.tbl_filter(function(key)
@@ -228,6 +242,18 @@ return {
 								},
 							},
 						},
+					})
+				end,
+				ruff = function()
+					lspconfig.ruff.setup({
+						on_attach = function(client, bufnr)
+							client.server_capabilities.hoverProvider = false
+						end,
+					})
+				end,
+				basedpyright = function()
+					lspconfig.basedpyright.setup({
+						capabilities = capabilities,
 					})
 				end,
 			},
