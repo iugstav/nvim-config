@@ -31,6 +31,38 @@ autocmd("TextYankPost", {
 	end,
 })
 
+autocmd("FileType", {
+	group = yank_group,
+	pattern = { "swift" },
+	callback = function()
+		local root_dir = "/usr/local/bin/sourcekit-lsp"
+		local client = vim.lsp.start({
+			name = "sourcekit-lsp",
+			cmd = { "sourcekit-lsp" },
+			root_dir = root_dir,
+		})
+		vim.lsp.buf_attach_client(0, client)
+	end,
+})
+
+autocmd("FileType", {
+	callback = function()
+		local ext = vim.fn.fnamemodify(vim.fn.expand("%"), ":e")
+		if ext == "m" then
+			vim.bo.filetype = "octave"
+		end
+	end,
+})
+
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
+
+-- vimtex
+-- vim.g.tex_flavor = "latex"
+-- vim.g.vimtex_view_method = "zathura"
+-- vim.g.maplocalleader = ","
+-- vim.o.foldmethod = "expr"
+-- vim.o.foldexpr = "vimtex#fold#level(v:lnum)"
+-- vim.o.foldtext = "vimtex#fold#text()"
+-- vim.o.foldlevel = 2
