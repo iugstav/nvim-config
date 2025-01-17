@@ -1,44 +1,20 @@
 return {
 	{
-		"rebelot/kanagawa.nvim",
+		"zenbones-theme/zenbones.nvim",
+		-- Optionally install Lush. Allows for more configuration or extending the colorscheme
+		-- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+		-- In Vim, compat mode is turned on as Lush only works in Neovim.
+		dependencies = "rktjmp/lush.nvim",
+		lazy = false,
+		priority = 1000,
+		-- you can set set configuration options here
 		config = function()
-			require("kanagawa").setup({
-				compile = false, -- enable compiling the colorscheme
-				undercurl = true, -- enable undercurls
-				commentStyle = { italic = true },
-				functionStyle = {},
-				keywordStyle = { italic = true },
-				statementStyle = { bold = true },
-				typeStyle = {},
-				transparent = false, -- do not set background color
-				dimInactive = false, -- dim inactive window `:h hl-NormalNC`
-				terminalColors = true, -- define vim.g.terminal_color_{0,17}
-				colors = { -- add/modify theme and palette colors
-					palette = {},
-					theme = {
-						wave = {
-							ui = {
-								bg = "#0b0b0b",
-								bg_gutter = "#111111",
-							}
-						},
-						lotus = {},
-						dragon = {},
-						all = {}
-					},
-				},
-				overrides = function(colors) -- add/modify highlights
-					return {}
-				end,
-				theme = "wave", -- Load "wave" theme when 'background' option is not set
-				background = { -- map the value of 'background' option to a theme
-					dark = "wave", -- try "dragon" !
-					light = "lotus"
-				},
-			})
+			require("lush")(require("iugstav.colors.custom_zenbones"))
 
-			vim.cmd [[ colorscheme kanagawa ]]
-		end
-
+			-- vim.g.zenbones_darkness = "stark"
+			-- vim.g.zenbones_darken_comments = 40
+			-- vim.g.zenbones_lighten_text = 100
+			-- vim.cmd.colorscheme("zenbones")
+		end,
 	},
 }
