@@ -18,6 +18,9 @@ return {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				ocaml = { "ocamlformat" },
+				python = { "black" },
+				typescript = { "prettierd", "prettier" },
+				javascript = { "prettierd", "prettier" },
 			},
 
 			format_on_save = function()

@@ -1,18 +1,18 @@
 return {
 	{
-		'nvim-lualine/lualine.nvim',
-		dependencies = { 'nvim-tree/nvim-web-devicons' },
+		"nvim-lualine/lualine.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 
 		event = "VeryLazy",
 		config = function()
-			require('lualine').setup {
+			require("lualine").setup({
 				options = {
 					icons_enabled = true,
-					theme = 'jellybeans',
+					theme = "zenbones",
 					component_separators = "",
-					section_separators = { left = '', right = '' },
+					section_separators = { left = "", right = "" },
 					disabled_filetypes = {
-						"alpha"
+						"alpha",
 					},
 					ignore_focus = {},
 					always_divide_middle = true,
@@ -21,36 +21,36 @@ return {
 						statusline = 1000,
 						tabline = 1000,
 						winbar = 1000,
-					}
+					},
 				},
 				sections = {
-					lualine_a = { 'mode' },
-					lualine_b = { 'branch', 'diff', 'diagnostics' },
+					lualine_a = { "mode" },
+					lualine_b = { "branch", "diff", "diagnostics" },
 					lualine_c = {
 						{
 							"filetype",
 							icon_only = true,
-							padding = { left = 1, right = 0 }
+							padding = { left = 1, right = 0 },
 						},
-						"filename"
+						"filename",
 					},
-					lualine_x = { 'encoding' },
-					lualine_y = { 'progress' },
-					lualine_z = { 'location' }
+					lualine_x = { "encoding" },
+					lualine_y = { "progress" },
+					lualine_z = { "location" },
 				},
 				inactive_sections = {
 					lualine_a = {},
 					lualine_b = {},
-					lualine_c = { 'filename' },
-					lualine_x = { 'location' },
+					lualine_c = { "filename" },
+					lualine_x = { "location" },
 					lualine_y = {},
-					lualine_z = {}
+					lualine_z = {},
 				},
 				tabline = {},
 				winbar = {},
 				inactive_winbar = {},
-				extensions = {}
-			}
-		end
-	}
+				extensions = {},
+			})
+		end,
+	},
 }

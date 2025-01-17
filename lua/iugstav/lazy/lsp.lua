@@ -57,11 +57,18 @@ return {
 			cmp_lsp.default_capabilities()
 		)
 
+		local capabilities = nil
+		if pcall(require, "cmp_nvim_lsp") then
+			capabilities = require("cmp_nvim_lsp").default_capabilities()
+		end
+
+		local lspconfig = require("lspconfig")
+
 		local servers = {
 			clangd = {
 				cmd = {
 					"clangd",
-					"--fallback-style=webkit",
+					"--fallback-style=Webkit",
 				},
 			},
 			gopls = {
@@ -81,6 +88,15 @@ return {
 				},
 			},
 			lua_ls = {
+				single_file_support = true,
+				settings = {
+					Lua = {
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true),
+							checkThirdParty = false,
+						},
+					},
+				},
 				server_capabilities = {
 					semanticTokensProvider = vim.NIL,
 				},
@@ -141,7 +157,6 @@ return {
 				},
 			},
 
-			-- Probably want to disable formatting for this lang server
 			tsserver = {
 				server_capabilities = {
 					documentFormattingProvider = false,
@@ -170,15 +185,47 @@ return {
 			},
 
 			basedpyright = {
-				disableOrganizeImports = true,
-				disableTaggedHints = false,
-				analysis = {
-					typeCheckingMode = "standard",
-					useLibraryCodeForTypes = true, -- Analyze library code for type information
-					autoImportCompletions = true,
-					autoSearchPaths = true,
-					diagnosticSeverityOverrides = {
-						reportIgnoreCommentWithoutRule = true,
+				settings = {
+					basedpyright = {
+						analysis = {
+							typeCheckingMode = "recommended",
+							autoSearchPaths = true,
+							useLibraryCodeForTypes = true,
+							autoImportCompletions = true,
+							diagnosticSeverityOverrides = {
+								reportUnknownMemberType = false,
+								reportUnknownArgumentType = false,
+								-- reportUnusedClass = "warning",
+								-- reportUnusedFunction = "warning",
+								reportUndefinedVariable = true,
+							},
+						},
+					},
+				},
+			},
+
+			jsonls = {
+				on_new_config = function(new_config)
+					new_config.settings.json.schemas = new_config.settings.json.schemas or {}
+					vim.list_extend(new_config.settings.json.schemas, require("schemastore").json.schemas())
+				end,
+				settings = {
+					json = {
+						format = {
+							enable = true,
+						},
+						validate = { enable = true },
+					},
+				},
+			},
+
+			yamlls = {
+				settings = {
+					yaml = {
+						schemaStore = {
+							url = "https://www.schemastore.org/api/json/catalog.json",
+							enable = true,
+						},
 					},
 				},
 			},
@@ -202,10 +249,10 @@ return {
 			"delve",
 			"tailwindcss-language-server",
 		}
+
 		vim.list_extend(ensure_installed, servers_to_install)
 		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-		local lspconfig = require("lspconfig")
 		for name, config in pairs(servers) do
 			if config == true then
 				config = {}
@@ -217,46 +264,11 @@ return {
 			lspconfig[name].setup(config)
 		end
 
-		require("mason-lspconfig").setup({
-			ensure_installed = {
-				"lua_ls",
-				"rust_analyzer",
-				"gopls",
-				"templ",
-			},
-			handlers = {
-				function(server_name) -- default handler (optional)
-					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
-					})
-				end,
-
-				["lua_ls"] = function()
-					lspconfig.lua_ls.setup({
-						capabilities = capabilities,
-						settings = {
-							Lua = {
-								runtime = { version = "Lua 5.1" },
-								diagnostics = {
-									globals = { "vim", "it", "describe", "before_each", "after_each" },
-								},
-							},
-						},
-					})
-				end,
-				ruff = function()
-					lspconfig.ruff.setup({
-						on_attach = function(client, bufnr)
-							client.server_capabilities.hoverProvider = false
-						end,
-					})
-				end,
-				basedpyright = function()
-					lspconfig.basedpyright.setup({
-						capabilities = capabilities,
-					})
-				end,
-			},
+		lspconfig.vala_ls.setup({
+			cmd = { "vala-language-server" },
+			filetypes = { "vala", "genie" },
+			root_dir = lspconfig.util.root_pattern("meson.build", ".git"),
+			single_file_support = true,
 		})
 
 		lspconfig.gdscript.setup({})
@@ -267,6 +279,7 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			callback = function(e)
 				local client = assert(vim.lsp.get_client_by_id(e.data.client_id), "must have valid client")
+				vim.bo[e.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
 				local settings = servers[client.name]
 				if type(settings) ~= "table" then
@@ -304,6 +317,17 @@ return {
 				vim.keymap.set("n", "]d", function()
 					vim.diagnostic.goto_prev()
 				end, opts)
+
+				if settings.server_capabilities then
+					for k, v in pairs(settings.server_capabilities) do
+						if v == vim.NIL then
+							---@diagnostic disable-next-line: cast-local-type
+							v = nil
+						end
+
+						client.server_capabilities[k] = v
+					end
+				end
 			end,
 		})
 		cmp.setup({
@@ -334,6 +358,7 @@ return {
 				{ name = "luasnip" }, -- For luasnip users.
 			}, {
 				{ name = "buffer" },
+				{ name = "path" },
 			}),
 
 			formatting = {

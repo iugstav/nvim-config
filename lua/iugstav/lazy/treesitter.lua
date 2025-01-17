@@ -6,8 +6,14 @@ return {
 		require("nvim-treesitter.configs").setup({
 			-- A list of parser names, or "all"
 			ensure_installed = {
-				"vimdoc", "javascript", "typescript", "c", "lua", "rust",
-				"jsdoc", "bash",
+				-- "vimdoc",
+				"javascript",
+				"typescript",
+				"c",
+				"cpp",
+				"lua",
+				"rust",
+				"bash",
 			},
 
 			-- Install parsers synchronously (only applied to `ensure_installed`)
@@ -19,12 +25,13 @@ return {
 
 			indent = {
 				enable = true,
-				disable = {"python", "css"}
+				disable = { "python", "css" },
 			},
 
 			highlight = {
 				-- `false` will disable the whole extension
 				enable = true,
+				disable = { "latex" },
 
 				-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
 				-- Set this to `true` if you depend on "syntax" being enabled (like for indentation).
@@ -44,6 +51,5 @@ return {
 		}
 
 		vim.treesitter.language.register("templ", "templ")
-
-	end
+	end,
 }

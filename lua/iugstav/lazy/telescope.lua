@@ -9,8 +9,34 @@ return {
 
 	config = function()
 		require("telescope").setup({
-			file_ignore_patterns = { "./node_modules/*", "node_modules", "^node_modules/*", "node_modules/*" },
+			pickers = {
+
+				live_grep = {
+					file_ignore_patterns = {
+						"./node_modules/*",
+						"node_modules",
+						"^node_modules/*",
+						"node_modules/*",
+					},
+					hidden = true,
+				},
+
+				find_files = {
+					file_ignore_patterns = {
+						"./node_modules/*",
+						"node_modules",
+						"^node_modules/*",
+						"node_modules/*",
+						"%_build/**/*",
+						"%_build/.*",
+					},
+					hidden = true,
+				},
+			},
 		})
+
+		local harpoon = require("harpoon")
+		harpoon:setup()
 
 		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>pf", builtin.find_files, {})
@@ -27,5 +53,28 @@ return {
 			builtin.grep_string({ search = vim.fn.input("Grep > ") })
 		end)
 		vim.keymap.set("n", "<leader>vh", builtin.help_tags, {})
+
+		local conf = require("telescope.config").values
+		local function toggle_telescope(harpoon_files)
+			local file_paths = {}
+			for _, item in ipairs(harpoon_files.items) do
+				table.insert(file_paths, item.value)
+			end
+
+			require("telescope.pickers")
+				.new({}, {
+					prompt_title = "Harpoon",
+					finder = require("telescope.finders").new_table({
+						results = file_paths,
+					}),
+					previewer = conf.file_previewer({}),
+					sorter = conf.generic_sorter({}),
+				})
+				:find()
+		end
+
+		vim.keymap.set("n", "<C-e>", function()
+			toggle_telescope(harpoon:list())
+		end, { desc = "Open harpoon window" })
 	end,
 }

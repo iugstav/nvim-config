@@ -16,8 +16,9 @@ vim.opt.rtp:prepend(lazypath)
 local ok, lazy = pcall(require, "lazy")
 if ok then
 	lazy.setup({
+		import = "lazy" ,
 		spec = "iugstav.lazy",
-		change_detection = { notify = false }
+		change_detection = { notify = false },
 	})
 else
 	vim.notify("unable to load lazy")
