@@ -178,11 +178,11 @@ return {
 				},
 			},
 
-			hls = {
-				settings = {
-					codelens = { enable = true },
-				},
-			},
+			-- hls = {
+			-- 	settings = {
+			-- 		codelens = { enable = true },
+			-- 	},
+			-- },
 
 			basedpyright = {
 				settings = {
@@ -242,7 +242,8 @@ return {
 
 		require("fidget").setup({})
 
-		require("mason").setup()
+		require("mason").setup({})
+
 		local ensure_installed = {
 			"stylua",
 			"lua_ls",
@@ -270,6 +271,16 @@ return {
 			root_dir = lspconfig.util.root_pattern("meson.build", ".git"),
 			single_file_support = true,
 		})
+
+		-- local mason_root = vim.fn.stdpath("data") .. "/mason/packages/" --[[@as string]]
+		-- lspconfig.omnisharp.setup({
+		-- 	cmd = { "dotnet", mason_root .. "omnisharp/libexec/OmniSharp.dll" },
+		-- 	settings = {
+		-- 		FormattingOptions = {
+		-- 			OrganizeImports = true,
+		-- 		},
+		-- 	},
+		-- })
 
 		lspconfig.gdscript.setup({})
 		lspconfig.hls.setup({})
