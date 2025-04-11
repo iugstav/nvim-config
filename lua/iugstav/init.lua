@@ -58,11 +58,6 @@ vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 
--- vimtex
--- vim.g.tex_flavor = "latex"
--- vim.g.vimtex_view_method = "zathura"
--- vim.g.maplocalleader = ","
--- vim.o.foldmethod = "expr"
--- vim.o.foldexpr = "vimtex#fold#level(v:lnum)"
--- vim.o.foldtext = "vimtex#fold#text()"
--- vim.o.foldlevel = 2
+-- vim.opt.rtp:prepend("/home/iugstav/.opam/5.2.0/share/ocp-indent/vim")
+-- local opamshare = vim.fn.system("opam var share"):gsub("\n$", "")
+-- vim.opt.rtp:append(opamshare .. "/merlin/vim")
