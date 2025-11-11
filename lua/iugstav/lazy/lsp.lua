@@ -188,16 +188,26 @@ return {
 				settings = {
 					basedpyright = {
 						analysis = {
-							typeCheckingMode = "recommended",
+							typeCheckingMode = "basic",
+							diagnosticMode = "openFilesOnly",
 							autoSearchPaths = true,
 							useLibraryCodeForTypes = true,
 							autoImportCompletions = true,
+							inlayHints = {
+								callArgumentNames = true,
+							},
 							diagnosticSeverityOverrides = {
-								reportUnknownMemberType = false,
-								reportUnknownArgumentType = false,
-								-- reportUnusedClass = "warning",
-								-- reportUnusedFunction = "warning",
+								reportUnusedClass = "warning",
+								reportUnusedFunction = "warning",
 								reportUndefinedVariable = true,
+								reportAny = false,
+								reportMissingTypeArgument = false,
+								reportMissingTypeStubs = false,
+								reportUnknownArgumentType = false,
+								reportUnknownMemberType = false,
+								reportUnknownParameterType = false,
+								reportUnknownVariableType = false,
+								reportUnusedCallResult = false,
 							},
 						},
 					},

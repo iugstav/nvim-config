@@ -16,11 +16,22 @@ return {
 
 		opts = {
 			formatters_by_ft = {
-				lua = { "stylua" },
 				ocaml = { "ocamlformat" },
 				python = { "black" },
-				typescript = { "prettierd", "prettier" },
-				javascript = { "prettierd", "prettier" },
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				javascriptreact = { "prettier" },
+				typescriptreact = { "prettier" },
+				svelte = { "prettier" },
+				css = { "prettier" },
+				html = { "prettier" },
+				json = { "prettier" },
+				yaml = { "prettier" },
+				markdown = { "mdformat" },
+				graphql = { "prettier" },
+				liquid = { "prettier" },
+				lua = { "stylua" },
+				sql = { "sql_formatter" },
 			},
 
 			format_on_save = function()

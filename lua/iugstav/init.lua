@@ -8,12 +8,6 @@ local iugstavGroup = augroup("Iugstav", {})
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup("HighlightYank", {})
 
-vim.filetype.add({
-	extension = {
-		templ = "templ",
-	},
-})
-
 autocmd("BufWritePre", {
 	group = iugstavGroup,
 	pattern = "*",

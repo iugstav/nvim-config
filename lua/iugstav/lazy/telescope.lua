@@ -17,6 +17,11 @@ return {
 						"node_modules",
 						"^node_modules/*",
 						"node_modules/*",
+
+						"./.git/*",
+						".git",
+						"^.git/*",
+						".git/*",
 					},
 					hidden = true,
 				},
@@ -29,6 +34,11 @@ return {
 						"node_modules/*",
 						"%_build/**/*",
 						"%_build/.*",
+
+						"./.git/*",
+						".git",
+						"^.git/*",
+						".git/*",
 					},
 					hidden = true,
 				},
